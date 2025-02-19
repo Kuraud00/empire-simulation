@@ -2,4 +2,4 @@
 
 [![npm](https://img.shields.io/npm/v/koishi-plugin-empire-simulation?style=flat-square)](https://www.npmjs.com/package/koishi-plugin-empire-simulation)
 
-帝国模拟，本质是收菜、商店等小游戏合集
+正在开发中，目前仅完成签到部分！！！
