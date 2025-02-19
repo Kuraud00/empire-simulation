@@ -1,8 +1,8 @@
 import { Context, Schema, h } from 'koishi'
 import { } from 'koishi-plugin-puppeteer'
-import { } from 'koishi-plugin-smmcat-localstorage'
 import { loadData, saveData, userInfo } from './data-storage'
 import { signup } from './sign-up'
+import { farm } from './farm'
 
 export const name = 'empire-simulation'
 
@@ -47,7 +47,10 @@ export const Config: Schema<Config> = Schema.intersect([
 export function apply(ctx: Context, config: Config) {
 
   //注册签到相关指令
-  signup(ctx,config)
+  signup(ctx, config)
+  
+  //注册农场相关指令
+  farm(ctx, config)
 
   ctx.command('个人信息')
     .action(async ({ session }) => {
@@ -55,22 +58,4 @@ export function apply(ctx: Context, config: Config) {
       session.send(':\n※持有金币数：' + temp.coins + '\n※农场等级：' + temp.farm_level)
     })
 
-  //种田主命令
-  ctx.command('种田')
-    .action(({ session }) => {
-      session.send('主命令')
-    })
-
-  //子命令
-  ctx.command('种田').subcommand('.查询')
-    .action(async ({ session }) => {
-      const temp: userInfo = JSON.parse(await loadData(session.userId))
-      //TO DO：查询作物信息，遍历本地数据并更新
-    })
-
-  ctx.command('种田').subcommand('.查看农场')
-    .action(async ({ session }) => {
-      const temp: userInfo = JSON.parse(await loadData(session.userId))
-
-    })
 }

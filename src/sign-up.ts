@@ -22,6 +22,8 @@ export async function signup(ctx: Context, config: any) {
 
         if (isContinuous(user)) {
           user.bonus_count++
+        } else {
+          user.bonus_count = 0
         }
         //用户信息处理,若连续签到次数大于设置最大次数，则设为最大次数
         let realBonusCount = user.bonus_count
@@ -44,7 +46,7 @@ export async function signup(ctx: Context, config: any) {
 }
 
 //是否重复签到
-function isToday(user: userInfo) {
+function isToday(user: userInfo):boolean {
   const temp = Date.now()
   const currentDate = new Date(temp)
   const userDate = new Date(user.last_sign_up)
@@ -58,7 +60,7 @@ function isToday(user: userInfo) {
 }
 
 //是否连续签到
-function isContinuous(user: userInfo) {
+function isContinuous(user: userInfo):boolean {
   const temp = Date.now()
   const currentDate = new Date(temp)
   const previousDate = new Date(currentDate.getTime() - 24 * 60 * 60 * 1000)
@@ -71,7 +73,7 @@ function isContinuous(user: userInfo) {
 }
 
 //随机获取金币
-function getGold(minGold, maxGold, bonusCount, bonusGold) {
+function getGold(minGold, maxGold, bonusCount, bonusGold):number {
   const gold = Random.int(maxGold - minGold + 1) + minGold + bonusCount * bonusGold
   return gold
 }

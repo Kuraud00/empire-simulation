@@ -1,33 +1,44 @@
-import { Context } from "koishi"
 import fs from 'fs/promises'
 import path from 'path'
 
-export type userInfo = {
-  userId: string
-  coins: number
-  farm_level: number
-  farm_status: string
-  last_sign_up: Date
-  bonus_count: number
+export type corpInfo = {
+  start_to_grow: Date,
+  corp_type: number,
 }
 
+export type userInfo = {
+  userId: string,
+  coins: number,
+  farm_level: number,
+  last_sign_up: Date,
+  bonus_count: number,
+  corp_info: corpInfo,
+}
+
+export const corpType = ["Empty","Wheat","Carrot","Potato","MEGA watermelon"]
+
 const filepath = path.join(path.resolve(__dirname, '..'), 'data')
+
+const defaultCorp: corpInfo = {
+  start_to_grow: new Date(Date.now()),
+  corp_type: 0,
+}
 
 const defaultUser: userInfo = {
   userId: null,
   coins: 0,
   farm_level: 1,
-  farm_status: '0',
   last_sign_up: null,
-  bonus_count: 0
+  bonus_count: 0,
+  corp_info: defaultCorp,
 }
 
 /** 路径是否存在，若不存在则递归创建 */
-function ensurePathAvaliable(filepath: string) {
+async function ensurePathAvaliable(filepath: string) {
   try {
-    fs.access(filepath)
+    await fs.access(filepath)
   } catch (error) {
-    fs.mkdir(filepath, { recursive: true })
+    await fs.mkdir(filepath, { recursive: true })
   }
 }
 
@@ -51,8 +62,4 @@ export async function loadData(userId: string): Promise<string> {
     await saveData(newUser)
   }
   return await fs.readFile(finalpath, 'utf8')
-}
-
-export async function signUp() {
-  
 }
